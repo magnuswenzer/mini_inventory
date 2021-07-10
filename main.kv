@@ -1,0 +1,408 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+
+
+<OkCancelPopup@Popup>:
+    container: container
+    buttons: buttons
+    auto_dismiss: False
+    size_hint_x: .8
+    size_hint_y: .8
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        canvas.before:
+            Color: 
+                rgba: 0, 0, 0, 0
+
+            Rectangle: 
+                size: self.size
+                pos: self.pos
+
+        BoxLayout: 
+            id: container
+            size_hint: (1, .9)
+
+        BoxLayout:
+            id: buttons
+            orientation: 'horizontal'
+            size_hint_x: 1
+            size_hint_y: .1
+            spacing: 10
+            Button:
+                text: 'Avbryt'
+                # back_color: root.button_cancel_color
+                on_release: root._on_cancel()
+            Button:
+                text: 'Bekräfta'
+                # back_color: root.button_ok_color
+                on_release: root._on_ok()
+
+
+<UnitWidgetAdd@BoxLayout>:
+    orientation: 'horizontal'
+    name: name
+    Label: 
+        size_hint_y: .5
+        text: 'Namn:'
+    TextInput: 
+        size_hint_y: .5
+        multiline: False
+        id: name
+
+<CategoryWidgetAdd@BoxLayout>:
+    orientation: 'horizontal'
+    name: name
+    Label: 
+        size_hint_y: .5
+        text: 'Namn:'
+    TextInput: 
+        size_hint_y: .5
+        multiline: False
+        id: name
+
+<ItemWidgetAdd@BoxLayout>:
+    orientation: 'vertical'
+    name: name              # Vara
+    unit: unit              # Plats
+    category: category      # Kategori
+    quantity: quantity      # Antal
+    amount: amount          # Enhetsmängd
+    common: common          # Basvara
+    padding: 30
+    spacing: 30
+
+    canvas.before: 
+        Color: 
+            rgba: .8, .8, .8, 1
+            # rgba: get_color_from_hex('#32a84a')
+        RoundedRectangle: 
+            radius: [20]
+            size: self.size
+            pos: self.pos
+
+    MDTextField:
+        id: name
+        size_hint_y: .1
+        # size_hint: 1, None
+        # height: "30dp"
+        hint_text: 'Vara'
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: .1
+        Label:
+            text: 'Plats'
+        Spinner:
+            id: unit
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: .1
+        Label:
+            text: 'Kategori'
+        Spinner:
+            id: category
+            # size_hint_x: .3
+            # size_hint: None, None
+            # size: 100, 44
+            # pos_hint: {'center': (.5, .5)}
+            # text: 'Home'
+            # values: 'Home', 'Work', 'Other', 'Custom'
+            # on_text: app.update_item(root) 
+
+    MDTextField:
+        id: quantity
+        size_hint_y: .1
+        # size_hint: 1, None
+        # height: "30dp"
+        hint_text: 'Antal'
+
+    MDTextField:
+        id: amount
+        size_hint_y: .1
+        # size_hint: 1, None
+        # height: "30dp"
+        hint_text: 'Enhetsmängd'
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: .1
+        Label:
+            text: 'Basvara'
+        CheckBox:
+            id: common
+
+    # BoxLayout: 
+    #     orientation: 'horizontal'
+    #     Label: 
+    #         size_hint_y: .5
+    #         text: 'Namn:'
+    #     TextInput: 
+    #         size_hint_y: .5
+    #         multiline: False
+    #         id: name
+    # Fortsatt har med att lagga in BoxLayouts
+    # Spinner:
+    #     id: category
+    #     size_hint_x: .3
+    #     # size_hint: None, None
+    #     # size: 100, 44
+    #     pos_hint: {'center': (.5, .5)}
+    #     # text: 'Home'
+    #     # values: 'Home', 'Work', 'Other', 'Custom'
+    #     on_text: app.update_item(root)    
+    # TextInput: 
+    #     id: quantity
+    #     size_hint_x: .1
+    #     multiline: False
+    #     #input_type: 'number'
+    #     on_text_validate: app.update_item(root)
+    #     on_text: root.on_change_quantity()
+    # TextInput: 
+    #     id: amount
+    #     size_hint_x: .2
+    #     multiline: False
+    #     #input_type: 'number'
+    #     on_text_validate: app.update_item(root)
+    #     on_text: root.on_change_amount()
+    # CheckBox:
+    #     id: common
+    #     size_hint_x: .1
+    #     on_active: app.update_item(root)
+
+
+<ItemWidget@BoxLayout>:
+    name: name              # Vara
+    category: category      # Kategori
+    quantity: quantity      # Antal
+    amount: amount          # Enhetsmängd
+    common: common          # Basvara
+    
+    orientation: 'horizontal'
+    canvas.before: 
+        Color: 
+            rgba: get_color_from_hex('#32a84a')
+        RoundedRectangle: 
+            radius: [20]
+            size: self.size
+            pos: self.pos
+    Label:
+        id: name
+        size_hint_x: .3
+    Spinner:
+        id: category
+        size_hint_x: .2
+        # size_hint: None, None
+        # size: 100, 44
+        pos_hint: {'center': (.5, .5)}
+        # text: 'Home'
+        # values: 'Home', 'Work', 'Other', 'Custom'
+        on_text: app.update_item(root)   
+    BoxLayout:
+        id: quantity_boxlayout
+        size_hint_x: .2
+        orientation: 'horizontal' 
+        MDIconButton:
+            icon: "arrow-left-bold-box"
+            size_hint_x: .3
+            pos_hint: {"center_y": .5}
+            user_font_size: "20sp"
+            on_release: root.on_reduce_quantity()
+        TextInput: 
+            id: quantity
+            size_hint_x: .4
+            multiline: False
+            #input_type: 'number'
+            on_text_validate: app.update_item(root)
+            on_text: root.on_change_quantity()
+        MDIconButton:
+            icon: "arrow-right-bold-box"
+            size_hint_x: .3
+            pos_hint: {"center_y": .5}
+            user_font_size: "20sp"
+            on_release: root.on_increase_quantity()
+    TextInput: 
+        id: amount
+        size_hint_x: .1
+        multiline: False
+        #input_type: 'number'
+        on_text_validate: app.update_item(root)
+        on_text: root.on_change_amount()
+    CheckBox:
+        id: common
+        size_hint_x: .1
+        on_active: app.update_item(root)
+        # size_hint_x: .20
+    MDIconButton:
+        icon: "delete"
+        # size_hint_x: .1
+        pos_hint: {"center_x": .5, "center_y": .5}
+        user_font_size: "20sp"
+        on_release: app.delete_item(root)
+
+# <ItemWidgetAdd@BoxLayout>:
+#     orientation: 'horizontal'
+#     canvas.before: 
+#         Color: 
+#             rgba: get_color_from_hex('#32a84a')
+#         RoundedRectangle: 
+#             radius: [20]
+#             size: self.size
+#             pos: self.pos
+#     Label:
+#         text: root.name
+#     TextInput: 
+#         text: root.number
+#         input_type: 'number'
+#         on_return: print(self.text)#app.update_item(root)
+
+
+<UnitDrawer>:
+    theme_text_color: "Custom"
+    # on_release: self.parent.set_color_item(self)
+    on_release: self.parent.on_select_unit_drawer(self)
+
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color
+
+
+<CategoryDrawer>:
+    theme_text_color: "Custom"
+    # on_release: self.parent.set_color_item(self)
+    on_release: self.parent.on_select_category_drawer(self)
+
+    IconLeftWidget:
+        id: icon
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color
+
+
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+
+    AnchorLayout:
+        anchor_x: "left"
+        size_hint_y: None
+        height: avatar.height
+
+        Image:
+            id: avatar
+            size_hint: None, None
+            size: "56dp", "56dp"
+            source: "inventory.png"
+
+    MDLabel:
+        text: "Inventarier"
+        font_style: "Button"
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    ScrollView:
+        UnitList:
+            id: unit_list
+            UnitDrawer: 
+                icon: 'plus' 
+                text: 'Lägg till plats'
+
+    ScrollView:
+        CategoryList:
+            id: category_list
+            CategoryDrawer: 
+                icon: 'plus' 
+                text: 'Lägg till kategori'
+
+
+
+Screen:
+
+    NavigationLayout:
+
+        ScreenManager:
+
+            Screen:
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    canvas.before: 
+                        Color: 
+                            rgba: get_color_from_hex('#71ad7d')
+                        Rectangle: 
+                            size: self.size
+                            pos: self.pos
+                    MDToolbar:
+                        size_hint_y: .1
+                        title: "Vad har vi hemma?"
+                        md_bg_color: get_color_from_hex('#378c48')
+                        elevation: 10
+                        # left_action_items: [['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state('open')]]
+                    Label:  
+                        size_hint_y: .05
+                        id: title
+                    BoxLayout:
+                        size_hint_y: .05
+                        orientation: 'horizontal'
+                        Label: 
+                            size_hint_x: .3
+                            text: 'Vara'
+                        Label: 
+                            size_hint_x: .3
+                            text: 'Kategori'
+                        Label:
+                            size_hint_x: .1
+                            text: 'Antal'
+                        Label:
+                            size_hint_x: .1
+                            text: 'Enhetsmängd'
+                        Label:
+                            size_hint_x: .1
+                            text: 'Basvara'
+                        Label:
+                            size_hint_x: .1
+                            text: 'Ta bort'
+                    ScrollView:
+                        size_hint_y: .8
+                        GridLayout:
+                            canvas.before: 
+                                Color: 
+                                    rgba: get_color_from_hex('#71ad7d')
+                                Rectangle: 
+                                    size: self.size
+                                    pos: self.pos
+                            cols:1
+                            size_hint_y: None
+                            padding: 10
+                            spacing: 30
+                            height: self.minimum_height
+                            row_default_height: 60
+                            row_force_default: True
+                            id: item_list
+                    Button: 
+                        size_hint_y: .1
+                        text: 'Ny vara'
+                        on_release: app.add_item()
+
+
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                id: content_drawer
